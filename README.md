@@ -1,54 +1,159 @@
 # Order Management API
 
-API REST for restaurant order management system
+A RESTful API for restaurant order management system, built as a technical challenge for a backend position.
 
-[![Built with Cookiecutter Django](https://img.shields.io/badge/built%20with-Cookiecutter%20Django-ff69b4.svg?logo=cookiecutter)](https://github.com/cookiecutter/cookiecutter-django/)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+## Project Overview
 
-License: MIT
+This project was generated using [Cookiecutter Django](https://github.com/cookiecutter/cookiecutter-django/), a framework for jumpstarting production-ready Django projects quickly. The template provides a solid foundation with best practices, security features, and modern development tools pre-configured.
 
-## Settings
+## Prerequisites
 
-Moved to [settings](https://cookiecutter-django.readthedocs.io/en/latest/1-getting-started/settings.html).
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- [Just](https://just.systems/man/en/introduction.html) - A modern command runner
+
+### Why Just?
+
+Just is used instead of Makefile for several reasons:
+- More modern and user-friendly syntax
+- Better error messages and debugging capabilities
+- Built-in support for command-line arguments
+- Cross-platform compatibility
+- Simpler and more maintainable configuration
+
+For detailed information about Just, visit the [official documentation](https://just.systems/man/en/introduction.html).
+
+### Installing Just
+
+#### macOS
+```bash
+brew install just
+```
+
+#### Linux
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh | bash -s -- --to /usr/local/bin
+```
+
+#### Windows
+```bash
+scoop install just
+```
+
+## Environment Setup
+
+1. Create the following environment files based on the provided examples:
+   ```bash
+   cp .envs/.local/.django.example .envs/.local/.django
+   cp .envs/.local/.postgres.example .envs/.local/.postgres
+   ```
+
+2. Edit these files with your desired configuration.
+
+## Development Tools
+
+### Pre-commit Hooks
+
+This project uses pre-commit hooks to ensure code quality. To set up:
+
+#### Using pip:
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+#### Using Homebrew (macOS):
+```bash
+brew install pre-commit
+pre-commit install
+```
+
+The hooks include:
+- Ruff for linting and formatting
+- Django upgrade checks
+- Various code quality checks (trailing whitespace, end-of-file, etc.)
+- Template linting with djLint
+
+### Ruff
+
+[Ruff](https://github.com/astral-sh/ruff) is used for Python linting and formatting. It's configured in `pyproject.toml` and runs automatically through pre-commit hooks.
+
+## Docker Setup
+
+The project uses Docker and Docker Compose for containerization:
+
+- `docker-compose.local.yml`: Development environment configuration
+- `docker-compose.production.yml`: Production environment configuration
+
+This separation allows for:
+- Development-specific features (hot-reloading, debugging tools)
+- Production optimizations (minimized images, security configurations)
+- Environment-specific settings
+
+All development should be done through Docker Compose to ensure consistency across environments. The Python dependencies are managed within the Docker containers, so there's no need to install them locally.
+
+## Available Commands
+
+All commands are run through Just:
+
+```bash
+just [command]
+```
+
+Available commands:
+- `just build` - Build the Docker images
+- `just up` - Start the containers
+- `just down` - Stop the containers
+- `just prune` - Remove containers and volumes
+- `just logs` - View container logs
+- `just manage` - Run Django management commands
+- `just test` - Run pytest tests
+- `just test-cov` - Run tests with coverage
+- `just type-check` - Run mypy type checking
+
+## CI/CD and Dependencies
+
+- **GitHub Actions**: CI/CD pipeline configuration is located in `.github/workflows/`
+- **Dependabot**: Configured in `.github/dependabot.yml` to automatically update dependencies
 
 ## Basic Commands
 
-### Setting Up Your Users
+### Setting Up Users
 
-- To create a **normal user account**, just go to Sign Up and fill out the form. Once you submit it, you'll see a "Verify Your E-mail Address" page. Go to your console to see a simulated email verification message. Copy the link into your browser. Now the user's email should be verified and ready to go.
+- Create a superuser:
+  ```bash
+  just manage createsuperuser
+  ```
 
-- To create a **superuser account**, use this command:
+### Running Tests
 
-      $ python manage.py createsuperuser
+The project uses pytest for testing. You can run tests in several ways:
 
-For convenience, you can keep your normal user logged in on Chrome and your superuser logged in on Firefox (or similar), so that you can see how the site behaves for both kinds of users.
+```bash
+# Run all tests
+just test
 
-### Type checks
+# Run tests with coverage report
+just test-cov
 
-Running type checks with mypy:
+# Run specific test file
+just test tests/path/to/test_file.py
 
-    $ mypy order_management_api
+# Run tests matching a pattern
+just test -k "test_pattern"
+```
 
-### Test coverage
+The coverage report will be generated in the `htmlcov` directory. You can view it by opening `htmlcov/index.html` in your browser.
 
-To run the tests, check your test coverage, and generate an HTML coverage report:
+### Type Checking
 
-    $ coverage run -m pytest
-    $ coverage html
-    $ open htmlcov/index.html
+The project uses mypy for static type checking. To run type checks:
 
-#### Running tests with pytest
+```bash
+just type-check
+```
 
-    $ pytest
+This will check all Python files in the project for type errors and inconsistencies.
 
-### Live reloading and Sass CSS compilation
+## License
 
-Moved to [Live reloading and SASS compilation](https://cookiecutter-django.readthedocs.io/en/latest/2-local-development/developing-locally.html#using-webpack-or-gulp).
-
-## Deployment
-
-The following details how to deploy this application.
-
-### Docker
-
-See detailed [cookiecutter-django Docker documentation](https://cookiecutter-django.readthedocs.io/en/latest/3-deployment/deployment-with-docker.html).
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
