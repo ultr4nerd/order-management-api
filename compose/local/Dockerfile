@@ -1,4 +1,4 @@
-FROM docker.io/python:3.12.9-slim-bookworm AS python
+FROM docker.io/python:3.12.10-slim-bookworm AS python
 
 FROM python AS python-build-stage
 ARG BUILD_ENVIRONMENT=local
