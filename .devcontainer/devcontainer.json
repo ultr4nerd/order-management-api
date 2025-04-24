@@ -1,0 +1,32 @@
+// For format details, see https://containers.dev/implementors/json_reference/
+{
+    "name": "order_management_api_dev",
+    "dockerComposeFile": [
+        "../compose.local.yaml"
+    ],
+    "init": true,
+    "mounts": [
+        {
+            "source": "./.devcontainer/bash_history",
+            "target": "/home/dev-user/.bash_history",
+            "type": "bind"
+        },
+        {
+            "source": "~/.ssh",
+            "target": "/home/dev-user/.ssh",
+            "type": "bind"
+        }
+    ],
+    "overrideCommand": false,
+    "service": "django",
+    "remoteUser": "dev-user",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-azuretools.vscode-docker"
+            ]
+        }
+    },
+    "postCreateCommand": "cat .devcontainer/bashrc.override.sh >> ~/.bashrc"
+}
